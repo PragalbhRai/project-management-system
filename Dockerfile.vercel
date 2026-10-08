@@ -1,0 +1,25 @@
+﻿FROM node:24-alpine
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+COPY apps/api/package.json ./apps/api/
+COPY packages/api-client/package.json ./packages/api-client/
+
+RUN npm ci
+
+COPY apps/api ./apps/api
+COPY packages/api-client ./packages/api-client
+
+WORKDIR /app/apps/api
+
+# Prisma config requires DATABASE_URL during generation,
+# but generation itself does not need a live database connection.
+ENV DATABASE_URL=postgresql://placeholder:placeholder@localhost:5432/placeholder
+
+RUN npx prisma generate
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
