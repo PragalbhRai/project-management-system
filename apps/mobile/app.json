@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "PMS Studio",
+    "slug": "pms-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#090d16"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pms.mobile"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#090d16"
+      },
+      "package": "com.pms.mobile"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-secure-store"
+    ],
+    "scheme": "pms",
+    "extra": {
+      "eas": {
+        "projectId": "4aa72a61-ffe0-456a-b1a9-51f241e29cf8"
+      }
+    }
+  }
+}

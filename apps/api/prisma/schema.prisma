@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ProjectStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+
+  @@map("project_status")
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+
+  @@map("task_priority")
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+
+  @@map("task_status")
+}
+
+model User {
+  id           String         @id @default(uuid()) @map("id")
+  fullName     String         @map("full_name")
+  email        String         @unique @map("email")
+  passwordHash String         @map("password_hash")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+
+  projects     Project[]
+  revokedTokens RevokedToken[]
+
+  @@map("users")
+}
+
+model Project {
+  id          String        @id @default(uuid()) @map("id")
+  ownerId     String        @map("owner_id")
+  name        String        @map("name")
+  description String?       @map("description")
+  status      ProjectStatus @default(NOT_STARTED) @map("status")
+  startDate   DateTime?     @db.Date @map("start_date")
+  endDate     DateTime?     @db.Date @map("end_date")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  owner       User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  tasks       Task[]
+
+  @@index([ownerId])
+  @@map("projects")
+}
+
+model Task {
+  id          String       @id @default(uuid()) @map("id")
+  projectId   String       @map("project_id")
+  name        String       @map("name")
+  description String?      @map("description")
+  priority    TaskPriority @default(MEDIUM) @map("priority")
+  status      TaskStatus   @default(PENDING) @map("status")
+  dueDate     DateTime?    @db.Date @map("due_date")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([status])
+  @@index([priority])
+  @@map("tasks")
+}
+
+model RevokedToken {
+  id        String   @id @default(uuid()) @map("id")
+  jti       String   @unique @map("jti")
+  userId    String   @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  revokedAt DateTime @default(now()) @map("revoked_at")
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
+  @@index([userId])
+  @@map("revoked_tokens")
+}

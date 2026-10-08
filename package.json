@@ -1,0 +1,23 @@
+{
+  "name": "project-management-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Full Stack Project Management System (NestJS + Prisma + PostgreSQL + React + Expo)",
+  "workspaces": [
+    "apps/api",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run --workspace=apps/api build",
+    "build:api-client": "npm run --workspace=@pms/api-client build",
+    "start": "npm run --workspace=apps/api start",
+    "start:dev": "npm run --workspace=apps/api start:dev",
+    "test": "npm run --workspace=apps/api test",
+    "test:e2e": "npm run --workspace=apps/api test:e2e",
+    "prisma:generate": "npm run --workspace=apps/api prisma:generate",
+    "prisma:migrate": "npm run --workspace=apps/api prisma:migrate"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.0"
+  }
+}
