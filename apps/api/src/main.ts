@@ -84,3 +84,6 @@ bootstrap().catch((err) => {
   console.error('Fatal application bootstrap failure:', err);
   process.exit(1);
 });
+
+export { bootstrap };
+export default bootstrap;

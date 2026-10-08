@@ -15,7 +15,9 @@
     "test": "npm run --workspace=apps/api test",
     "test:e2e": "npm run --workspace=apps/api test:e2e",
     "prisma:generate": "npm run --workspace=apps/api prisma:generate",
-    "prisma:migrate": "npm run --workspace=apps/api prisma:migrate"
+    "prisma:migrate": "npm run --workspace=apps/api prisma:migrate",
+    "prisma:deploy": "npm run --workspace=apps/api prisma:deploy",
+    "vercel-build": "npm run --workspace=apps/api vercel-build"
   },
   "devDependencies": {
     "prettier": "^3.5.0"
